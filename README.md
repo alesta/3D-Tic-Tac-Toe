@@ -5,6 +5,11 @@ For Dr. Nevard's AI class.
 
 Team 黒
 
+Alex
+Brendan
+Joe
+Josh
+
 Notes
 -----
 
