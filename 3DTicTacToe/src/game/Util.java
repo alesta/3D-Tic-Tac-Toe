@@ -24,6 +24,19 @@ public class Util {
 		}
 	}
 
+	// Finds index of block on the board
+	public static int findBlock(int x, int y, int z) {
+		return z + (4 * x) + (16 * y);
+	}
+
+	// Copies a board of Blocks
+	public static void copyBoard(ArrayList<Block> board1,
+			ArrayList<Block> board2) {
+		board2.clear();
+		for (Block b : board1)
+			board2.add(b);
+	}
+
 	// Prints Out Our Board
 	public static void printBoard(ArrayList<Block> board) {
 		String row1 = "", row2 = "", row3 = "", row4 = "";
