@@ -3,6 +3,11 @@ package game;
 import java.util.ArrayList;
 
 public class Util {
+	public static void resetPriority(ArrayList<Block> board) {
+		for (Block b : board)
+			b.setPriority(0);
+	}
+
 	/*
 	 * Compares Priorities Had to do this since Java can't let you edit
 	 * operators such as >, <, and ==
