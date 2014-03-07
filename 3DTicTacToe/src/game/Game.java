@@ -11,38 +11,63 @@ public class Game {
 	 * of which blocks may be valuable choices. After this we will use alpha
 	 * beta pruning to determine which option is the best.
 	 */
-	void updatePriority() {
+	public static void updatePriority() {
 		int index = 0;
 		Util.resetPriority(board);
 		for (Block b : board) {
 			if (b.isSelected()) {
-				for (int i = b.getX(); i < 4; i++) {
-
+				Util.linearUpdate(board, b);
+				if (Util.contains(Block.edge, index)) {
+					int x = b.getX();
+					int y = b.getY();
+					int z = b.getZ();
+					switch (y % 3) {
+					case 0:
+						if (x % 3 == 0)
+							Util.sameZDiagonal(board, b);
+						else
+							Util.sameXDiagonal(board, b);
+						break;
+					default:
+						Util.sameYDiagonal(board, b);
+						break;
+					}
+				} else if (Util.contains(Block.outerCenter, index)) {
+					int x = b.getX();
+					int y = b.getY();
+					int z = b.getZ();
+					switch (y % 3) {
+					case 0:
+						Util.sameYDiagonal(board, b);
+						break;
+					default:
+						if (x % 3 == 0)
+							Util.sameXDiagonal(board, b);
+						else
+							Util.sameZDiagonal(board, b);
+						break;
+					}
+				} else {
+					Util.sameXDiagonal(board, b);
+					Util.sameYDiagonal(board, b);
+					Util.sameZDiagonal(board, b);
+					Util.cornerDiagonal(board, b);
 				}
-				for (int i = b.getY(); i < 4; i++) {
-
-				}
-				for (int i = b.getZ(); i < 4; i++) {
-
-				}
-				if (index == 0 || index == 3 || index == 12 || index == 15
-						|| index == 48 || index == 51 || index == 60
-						|| index == 63) {
-					
-				}
-					index++;
 			}
+			index++;
 		}
 	}
 
 	public static void main(String args[]) {
 		board = new ArrayList<Block>();
 		Util.populateBoard(board);
-		board.get(Util.findBlock(1, 1, 1)).setTeam(1);
-		Util.printBoard(board);
-		boolean running = true;
-		while (running) {
-
-		}
+		board.get(21).setSelected(true);
+		updatePriority();
+		Util.printPriorities(board);
+		/*
+		 * boolean running = true; while (running) {
+		 * 
+		 * }
+		 */
 	}
 }
