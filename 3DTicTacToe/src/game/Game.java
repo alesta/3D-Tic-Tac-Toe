@@ -61,7 +61,7 @@ public class Game {
 	public static void main(String args[]) {
 		board = new ArrayList<Block>();
 		Util.populateBoard(board);
-		board.get(21).setSelected(true);
+		board.get(Util.findBlock(1, 1, 0)).setSelected(true);
 		updatePriority();
 		Util.printPriorities(board);
 		/*

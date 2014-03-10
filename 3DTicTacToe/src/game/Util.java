@@ -3,6 +3,16 @@ package game;
 import java.util.ArrayList;
 
 public class Util {
+	public static int findLargest(ArrayList<Block> board) {
+		int currentBlock = 0;
+		for (int i = 0; i < board.size(); i++) {
+			if (higherPriority(board.get(i), board.get(currentBlock))) {
+				currentBlock = i;
+			}
+		}
+		return currentBlock;
+	}
+	
 	public static boolean contains(int[] array, int value) {
 		for (int i : array) {
 			if (i == value)
