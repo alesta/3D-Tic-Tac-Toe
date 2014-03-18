@@ -1,5 +1,8 @@
 package game;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -7,6 +10,7 @@ import java.util.Scanner;
 
 public class Game {
 	static ArrayList<Block> board;
+	static boolean debug = true;
 
 	/*
 	 * Heuristic (Kind of): This method will just give us an initial indicator
@@ -81,12 +85,16 @@ public class Game {
 			buffer.add(b.edZ);
 			buffer.add(b.eD);
 			for (int i = 0; i < 7; i++) {
-				if (buffer.get(i) == 2) b.addPriority(3);
-				if (buffer.get(i) == 1) b.addPriority(2);
+				if (buffer.get(i) == 2)
+					b.addPriority(5);
+				if (buffer.get(i) == 1)
+					b.addPriority(4);
 			}
 			for (int i = 7; i < 14; i++) {
-				if (buffer.get(i) == 2) b.addPriority(2);
-				if (buffer.get(i) == 1) b.addPriority(1);
+				if (buffer.get(i) == 2)
+					b.addPriority(2);
+				if (buffer.get(i) == 1)
+					b.addPriority(1);
 			}
 		}
 	}
@@ -94,6 +102,7 @@ public class Game {
 	public static Block selectBlock() {
 		ArrayList<Block> buffer = new ArrayList<Block>();
 		ArrayList<Block> topPriority = new ArrayList<Block>();
+		ArrayList<Block> cOB = new ArrayList<Block>();
 		updatePriority(board);
 
 		buffer = Util.findLargest(board);
@@ -124,10 +133,12 @@ public class Game {
 				System.out.println("MUST");
 				return cL.b;
 			}
-			minimizer.add(new Leaf(cL.board, tree.get(i), cL.getAlpha(), cL
+
+			Util.copyBoard(board, cOB);
+			minimizer.add(new Leaf(cOB, tree.get(i), cL.getAlpha(), cL
 					.getBeta(), 1, buffer.get(0)));
 			if (buffer.size() > 1)
-				minimizer.add(new Leaf(cL.board, tree.get(i), cL.getAlpha(), cL
+				minimizer.add(new Leaf(cOB, tree.get(i), cL.getAlpha(), cL
 						.getBeta(), 1, buffer.get(1)));
 			for (int j = 0; j < minimizer.size(); j++) {
 				Leaf tip = minimizer.get(j);
@@ -157,24 +168,39 @@ public class Game {
 		return tree.get(0).b;
 	}
 
-	public static void main(String args[]) {
+	public static void main(String args[]) throws FileNotFoundException {
+		PrintWriter pw = new PrintWriter(new File("log.txt"));
+
 		board = new ArrayList<Block>();
 		Util.populateBoard(board);
 		Util.printBoard(board);
-
 		Scanner scanner = new Scanner(System.in);
+
 		boolean running = true;
 		while (running) {
 			int x = scanner.nextInt();
+			if (x == -1)
+				break;
 			int y = scanner.nextInt();
 			int z = scanner.nextInt();
 			Util.placeBlock(board, x, y, z, 2);
+
+			// Debug Stuff
+			if (debug)
+				pw.println("Enemy: " + x + ", " + y + ", " + z);
+
 			Block b = selectBlock();
 			Util.placeBlock(board, b.getX(), b.getY(), b.getZ(), 1);
 
-			Util.printBlockXYZ("Selected: ", b);
-			Util.printBoard(board);
+			// Debug Stuff
+			if (debug) {
+				pw.println("Friendly: " + b.getX() + ", " + b.getY() + ", "
+						+ b.getZ());
+				Util.printBlockXYZ("Selected: ", b);
+				Util.printBoard(board);
+			}
 		}
 		scanner.close();
+		pw.close();
 	}
 }

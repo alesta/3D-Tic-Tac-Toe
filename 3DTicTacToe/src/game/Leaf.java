@@ -14,8 +14,9 @@ public class Leaf {
 		this.alpha = alpha;
 		this.beta = beta;
 		this.b = b;
-		Util.resetPriority(this.board);
 		if (parent != null) this.parent = parent;
+		if (type == 0) Util.placeBlock(board, b.getX(), b.getY(), b.getZ(), 1);
+		if (type == 1) Util.placeBlock(board, b.getX(), b.getY(), b.getZ(), 2);
 	}
 
 	public int getAlpha() {

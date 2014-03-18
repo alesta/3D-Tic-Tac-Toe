@@ -317,7 +317,7 @@ public class Util {
 			ArrayList<Block> board2) {
 		board2.clear();
 		for (Block b : board1)
-			board2.add(b);
+			board2.add(new Block(b.getX(), b.getY(), b.getZ()));
 	}
 
 	// Prints Out Our Board
@@ -411,5 +411,16 @@ public class Util {
 	public static void printBlockList(ArrayList<Block> list) {
 		for (int i = 0; i < list.size(); i++)
 			printBlockXYZ(i + ": ", list.get(i));
+	}
+
+	public static boolean checkGameOver(ArrayList<Block> board) {
+		for (Block b : board) {
+			if (b.fX == 4 || b.fY == 4 || b.fZ == 4 || b.fdX == 4 || b.fdY == 4
+					|| b.fdZ == 4 || b.fD == 4 || b.eX == 4 || b.eY == 4
+					|| b.eZ == 4 || b.edX == 4 || b.edY == 4 || b.edZ == 4
+					|| b.eD == 4)
+				return true;
+		}
+		return false;
 	}
 }
