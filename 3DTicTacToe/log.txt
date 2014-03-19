@@ -1,2 +1,0 @@
-Enemy: 1, 1, 1
-Friendly: 0, 0, 0

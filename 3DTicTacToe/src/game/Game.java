@@ -10,7 +10,7 @@ import java.util.Scanner;
 
 public class Game {
 	static ArrayList<Block> board;
-	static boolean debug = true;
+	static boolean debug = false, second = false;
 
 	/*
 	 * Heuristic (Kind of): This method will just give us an initial indicator
@@ -173,25 +173,28 @@ public class Game {
 
 		board = new ArrayList<Block>();
 		Util.populateBoard(board);
-		Util.printBoard(board);
 		Scanner scanner = new Scanner(System.in);
 
 		boolean running = true;
 		while (running) {
-			int x = scanner.nextInt();
-			if (x == -1)
-				break;
-			int y = scanner.nextInt();
-			int z = scanner.nextInt();
-			Util.placeBlock(board, x, y, z, 2);
-
+			int x = 0, y = 0, z = 0;
+			if (second) {
+				x = scanner.nextInt();
+				if (x == -1)
+					break;
+				y = scanner.nextInt();
+				z = scanner.nextInt();
+				Util.placeBlock(board, x, y, z, 2);
+			}
+			second = true;
 			// Debug Stuff
 			if (debug)
 				pw.println("Enemy: " + x + ", " + y + ", " + z);
 
 			Block b = selectBlock();
 			Util.placeBlock(board, b.getX(), b.getY(), b.getZ(), 1);
-
+			System.out.println(b.getX() + " " + b.getY() + " " + b.getZ());
+			
 			// Debug Stuff
 			if (debug) {
 				pw.println("Friendly: " + b.getX() + ", " + b.getY() + ", "
